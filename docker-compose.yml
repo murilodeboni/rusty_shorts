@@ -5,7 +5,7 @@ services:
     image: postgres:15
     container_name: "rusty-shorts-db"
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: rusty_shorts_db
     ports:
