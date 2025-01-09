@@ -48,3 +48,17 @@ Ensure migration works (this should fail for example if down.sql is empty)
 ```sh
 diesel migration redo
 ```
+
+## Rocket
+
+Try to shorten an url
+```sh
+curl -X POST http://127.0.0.1:8000/api/shorten \
+     -H "Content-Type: application/json" \
+     -d '{"url": "https://google.com/"}'
+```
+
+you should get a response in the format
+```json
+{"slug":"abc123","shortened_url":"http://localhost:8000/abc123"}
+```

@@ -1,8 +1,15 @@
 #[macro_use]
 extern crate rocket;
 
+mod api;
+mod models;
+mod schema;
+
 use rocket_sync_db_pools::{database, diesel};
 use diesel::prelude::*;
+use crate::api::shorten_url::shorten;
+use models::url;
+
 
 #[database("rusty_shorts_db")]
 pub struct RustyShortsDB(diesel::PgConnection);
@@ -12,6 +19,7 @@ fn rocket() -> _ {
     rocket::build()
         .attach(RustyShortsDB::fairing()) // Attach the database fairing
         .mount("/", routes![index]) // Mount routes
+        .mount("/api", routes![shorten])
 }
 
 #[get("/")]

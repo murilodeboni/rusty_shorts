@@ -1,17 +1,16 @@
-use super::schema::urls;
-use chrono::{NaiveDateTime};
+use crate::schema::urls;
+use diesel::prelude::*;
 
-#[derive(Queryable)]
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = urls)]
 pub struct Url {
-    pub id: i32,
     pub slug: String,
     pub original_url: String,
-    pub created_at: NaiveDateTime,
 }
 
-#[derive(Insertable)]
+#[derive(Queryable, Insertable, Selectable, QueryableByName)]
 #[table_name = "urls"]
-pub struct NewUrl<'a> {
-    pub slug: &'a str,
-    pub original_url: &'a str,
+pub struct NewUrl {
+    pub slug: String,
+    pub original_url: String 
 }
