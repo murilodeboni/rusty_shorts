@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RustyShorts - URL Shortener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <h1 class="text-3xl font-bold mb-4">RustyShorts - Shorten Your URL</h1>
+
+    <div class="bg-white shadow-md rounded p-6">
+        <input type="text" id="urlInput" class="border p-2 w-80" placeholder="Enter URL" required>
+        <button onclick="shortenUrl()" class="bg-blue-500 text-white p-2 ml-2">Shorten</button>
+    </div>
+
+    <p id="result" class="mt-4"></p>
+
+    <script>
+        async function shortenUrl() {
+            const url = document.getElementById("urlInput").value;
+            const response = await fetch('/api/shorten', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: url })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerHTML = 
+                `Shortened URL: <a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a>`;
+        }
+    </script>
+</body>
+</html>
