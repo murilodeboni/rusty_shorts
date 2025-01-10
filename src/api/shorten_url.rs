@@ -20,9 +20,10 @@ pub struct ShortenedResponse {
 pub async fn shorten(db: RustyShortsDB, req: Json<UrlRequest>) -> Result<Json<ShortenedResponse>, String> {
     use crate::url::{NewUrl, Url};
     use crate::schema::urls;
+    use crate::api::generate_slug::generate_slug;
 
     // 1. Generate slug
-    let new_slug = "abc123".to_string();
+    let new_slug = generate_slug(&req.url);
 
     // 2. Build `NewUrl` with owned Strings
     let new_url = NewUrl {

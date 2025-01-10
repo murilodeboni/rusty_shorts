@@ -18,3 +18,6 @@ diesel = { version = "2.2.0", features = ["postgres"] }
 # openssl-sys = { version = "0.9.100", features = ["vendored"] }
 dotenvy = "0.15"
 
+# for slug generation
+slug = "0.1.6"
+nanoid = "0.4.0"
