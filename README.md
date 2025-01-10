@@ -14,7 +14,12 @@ docker logs rusty_shorts_db
 
 You can go into the databse with 
 ```sh
-docker exec -it rusty-shorts-db psql -U user -d rusty_shorts_db
+psql -h localhost -p 5432 -U admin -d rusty_shorts_db
+```
+
+query and check urls exist once a table is setup
+```sh
+SELECT * FROM urls LIMIT 10;
 ```
 
 to go inside the container
@@ -65,3 +70,12 @@ you should get a response in the format
 
 and get redirected to the original by going to http://localhost:8000/abc123
 
+To delete a slug
+```sh
+curl -X DELETE http://127.0.0.1:8000/api/delete/abc123
+```
+
+You should receive
+```json
+{"message":"Slug 'abc123' deleted successfully"}
+```

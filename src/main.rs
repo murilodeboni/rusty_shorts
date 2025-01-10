@@ -8,6 +8,7 @@ mod schema;
 use rocket_sync_db_pools::{database, diesel};
 use diesel::prelude::*;
 use crate::api::shorten_url::shorten;
+use crate::api::delete_slug::delete_slug;
 use crate::api::redirect_to_original::redirect_to_original;
 use models::url;
 
@@ -20,8 +21,9 @@ fn rocket() -> _ {
     rocket::build()
         .attach(RustyShortsDB::fairing()) // Attach the database fairing
         .mount("/", routes![index]) // Mount routes
-        .mount("/api", routes![shorten])
         .mount("/", routes![redirect_to_original])
+        .mount("/api", routes![shorten])
+        .mount("/api", routes![delete_slug])
 }
 
 #[get("/")]
