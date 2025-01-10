@@ -1,6 +1,4 @@
 CREATE TABLE urls (
-    id SERIAL PRIMARY KEY,
-    slug VARCHAR NOT NULL UNIQUE,
-    original_url TEXT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    slug VARCHAR PRIMARY KEY,
+    original_url TEXT NOT NULL
 );

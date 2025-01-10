@@ -1,0 +1,5 @@
+[default.databases]
+rusty_shorts_db = { url = "postgres://admin:password@localhost:5432/rusty_shorts_db" }
+
+[release.databases]
+rusty_shorts_db = { url = "postgres://admin:password@localhost:5432/rusty_shorts_db" }
