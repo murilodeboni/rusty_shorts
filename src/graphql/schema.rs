@@ -1,7 +1,6 @@
 use juniper::{graphql_object, EmptySubscription, FieldResult, RootNode};
-use crate::RustyShortsDB;  // ✅ Use the correct database struct
+use crate::RustyShortsDB;
 use crate::url::{Url, NewUrl};
-use crate::schema::urls;
 use diesel::prelude::*;
 
 pub struct QueryRoot;
@@ -30,7 +29,7 @@ impl MutationRoot {
         use crate::schema::urls::dsl::*;
 
         let new_slug = nanoid::nanoid!(6);
-        let new_url = NewUrl { slug: new_slug.clone(), original_url:  original_url_str};
+        let new_url = NewUrl { slug: new_slug.clone(), original_url: original_url_str };
 
         let result = context.run(move |conn| {
             diesel::insert_into(urls)

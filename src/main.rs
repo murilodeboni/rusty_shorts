@@ -37,8 +37,6 @@ fn graphiql() -> rocket::response::content::RawHtml<String> {
     juniper_rocket::graphiql_source("/graphql", None)
 }
 
-
-
 #[launch]
 fn rocket() -> _ {
     let schema = create_schema();
