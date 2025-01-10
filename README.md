@@ -62,3 +62,6 @@ you should get a response in the format
 ```json
 {"slug":"abc123","shortened_url":"http://localhost:8000/abc123"}
 ```
+
+and get redirected to the original by going to http://localhost:8000/abc123
+
