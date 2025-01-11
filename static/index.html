@@ -19,15 +19,31 @@
     <script>
         async function shortenUrl() {
             const url = document.getElementById("urlInput").value;
-            const response = await fetch('/api/shorten', {
+
+            const query = `
+                mutation {
+                    shortenUrl(originalUrlStr: "${url}") {
+                        slug
+                        originalUrl
+                    }
+                }
+            `;
+
+            const response = await fetch('/graphql', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: url })
+                body: JSON.stringify({ query })
             });
 
             const data = await response.json();
-            document.getElementById("result").innerHTML = 
-                `Shortened URL: <a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a>`;
+            console.log(data);
+            
+            if (data.errors) {
+                alert("Error: " + data.errors[0].message);
+            } else {
+                document.getElementById("result").innerHTML = 
+                    `Shortened URL: <a href="/${data.data.shortenUrl.slug}" target="_blank">${data.data.shortenUrl.slug}</a>`;
+            }
         }
     </script>
 </body>
