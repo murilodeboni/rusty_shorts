@@ -1,5 +1,5 @@
 use juniper::{graphql_object, EmptySubscription, FieldResult, RootNode};
-use crate::RustyShortsDB;
+use crate::{utils::utils, RustyShortsDB};
 use crate::url::{Url, NewUrl};
 use diesel::prelude::*;
 
@@ -28,7 +28,7 @@ impl MutationRoot {
     async fn shorten_url(context: &RustyShortsDB, original_url_str: String) -> FieldResult<Url> {
         use crate::schema::urls::dsl::*;
 
-        let new_slug = nanoid::nanoid!(6);
+        let new_slug = utils::generate_slug(&original_url_str);
         let new_url = NewUrl { slug: new_slug.clone(), original_url: original_url_str };
 
         let result = context.run(move |conn| {

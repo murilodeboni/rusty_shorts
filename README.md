@@ -54,25 +54,29 @@ Ensure migration works (this should fail for example if down.sql is empty)
 diesel migration redo
 ```
 
-## Rocket
+
+## GraphQL
 
 Try to shorten an url
 ```sh
-curl -X POST http://127.0.0.1:8000/api/shorten \
+curl -X POST http://127.0.0.1:8000/graphql \
      -H "Content-Type: application/json" \
-     -d '{"url": "https://google.com/"}'
+     -d '{"query": "mutation { shortenUrl(originalUrlStr: \"https://github.com/\") { slug originalUrl } }"}'
 ```
 
 you should get a response in the format
 ```json
-{"slug":"abc123","shortened_url":"http://localhost:8000/abc123"}
+{"data":{"shortenUrl":{"slug":"https-github-com-X6ct","originalUrl":"https://github.com/"}}}
 ```
 
-and get redirected to the original by going to http://localhost:8000/abc123
+## Rocket
+
+graphQL doesn't have a redirect, so 
+and get redirected to the original by going to http://localhost:8000/https-github-com-X6ct, the redirect is handled my rocket.
 
 To delete a slug
 ```sh
-curl -X DELETE http://127.0.0.1:8000/api/delete/abc123
+curl -X DELETE http://127.0.0.1:8000/api/delete/https-github-com-X6ct
 ```
 
 You should receive
