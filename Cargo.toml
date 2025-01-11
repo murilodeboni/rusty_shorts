@@ -21,3 +21,7 @@ dotenvy = "0.15"
 # for slug generation
 slug = "0.1.6"
 nanoid = "0.4.0"
+
+# For grphql
+juniper = "0.16"  # GraphQL library
+juniper_rocket = "0.9"  # Integrates GraphQL with Rocket
