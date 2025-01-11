@@ -69,17 +69,19 @@ you should get a response in the format
 {"data":{"shortenUrl":{"slug":"https-github-com-X6ct","originalUrl":"https://github.com/"}}}
 ```
 
-## Rocket
-
-graphQL doesn't have a redirect, so 
-and get redirected to the original by going to http://localhost:8000/https-github-com-X6ct, the redirect is handled my rocket.
-
 To delete a slug
 ```sh
-curl -X DELETE http://127.0.0.1:8000/api/delete/https-github-com-X6ct
+curl -X POST http://127.0.0.1:8000/graphql \
+     -H "Content-Type: application/json" \
+     -d '{"query": "mutation { deleteSlug(slugToDelete: \"https-github-com-v6i2\") }"}'
 ```
 
 You should receive
 ```json
-{"message":"Slug 'abc123' deleted successfully"}
+{"data":{"deleteSlug":"Slug deleted successfully"}}
 ```
+
+## Rocket
+
+Redirect is handled my rocket directly.
+and get redirected to the original by going to http://localhost:8000/https-github-com-X6ct, the 

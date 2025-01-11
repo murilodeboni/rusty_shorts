@@ -11,7 +11,6 @@ mod utils;
 use rocket_sync_db_pools::diesel;
 use rocket::serde::json::Json;
 use diesel::prelude::*;
-use crate::api::delete_slug::delete_slug;
 use crate::api::redirect_to_original::redirect_to_original;
 use models::url;
 use graphql::schema::{create_schema, Schema};
@@ -45,7 +44,6 @@ fn rocket() -> _ {
         .attach(RustyShortsDB::fairing()) // Attach the database fairing
         .mount("/", routes![index]) // Mount routes
         .mount("/", routes![redirect_to_original])
-        .mount("/api", routes![delete_slug])
         .manage(schema)
         .mount("/", routes![
             graphql_handler,
