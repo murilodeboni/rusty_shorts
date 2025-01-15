@@ -11,7 +11,7 @@ mod utils;
 use rocket::serde::json::Json;
 use rocket::fs::{FileServer, relative};
 use crate::api::redirect_to_original::redirect_to_original;
-use models::url;
+use crate::api::qr::get_qr;
 use graphql::schema::{create_schema, Schema};
 use db::RustyShortsDB;
 use juniper::http::GraphQLRequest;
@@ -42,6 +42,7 @@ fn rocket() -> _ {
     rocket::build()
         .attach(RustyShortsDB::fairing())
         .mount("/", FileServer::from(relative!("static")))
+        .mount("/", routes![get_qr])
         .mount("/", routes![redirect_to_original])
         .manage(schema)
         .mount("/", routes![

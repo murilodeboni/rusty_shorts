@@ -15,36 +15,64 @@
     </div>
 
     <p id="result" class="mt-4"></p>
+    <div class="flex items-center mb-4">
+        <input id="checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+        <label for="default-checkbox" class="ms-2 text-sm font-medium">With QR code?</label>
+    </div>
+    <div id="qrCodeContainer"></div>
+
 
     <script>
-        async function shortenUrl() {
-            const url = document.getElementById("urlInput").value;
+    async function shortenUrl() {
+        const url = document.getElementById("urlInput").value;
 
-            const query = `
-                mutation {
-                    shortenUrl(originalUrlStr: "${url}") {
-                        slug
-                        originalUrl
-                    }
+        const query = `
+            mutation {
+                shortenUrl(originalUrlStr: "${url}") {
+                    slug
+                    originalUrl
                 }
-            `;
+            }
+        `;
 
-            const response = await fetch('/graphql', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ query })
-            });
+        const response = await fetch('/graphql', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query })
+        });
 
-            const data = await response.json();
-            console.log(data);
+        const data = await response.json();
+        console.log(data);
+        
+        if (data.errors) {
+            alert("Error: " + data.errors[0].message);
+        } else {
+            document.getElementById("result").innerHTML = 
+                `Shortened URL: <a href="/${data.data.shortenUrl.slug}" target="_blank">
+                    /${data.data.shortenUrl.slug}
+                </a>`;
             
-            if (data.errors) {
-                alert("Error: " + data.errors[0].message);
+            const withQr = document.getElementById("checkbox").checked;
+
+            if (withQr) {
+                const shortUrl = data.data.shortenUrl.slug; 
+                // Clear qr (if exists)
+                document.getElementById("qrCodeContainer").innerHTML = "";
+
+                const img = document.createElement("img");
+                const fullUrl = `http://somedomainhere.abcdefg/${shortUrl}`;
+                img.src = `/qr?data=${encodeURIComponent(fullUrl)}`;
+                img.alt = "QR Code";
+
+                // Insert into an element on the page
+                document.getElementById("qrCodeContainer").appendChild(img);
             } else {
-                document.getElementById("result").innerHTML = 
-                    `Shortened URL: <a href="/${data.data.shortenUrl.slug}" target="_blank">${data.data.shortenUrl.slug}</a>`;
+                // If user unchecked, just remove or clear any prior QR
+                document.getElementById("qrCodeContainer").innerHTML = "";
             }
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>

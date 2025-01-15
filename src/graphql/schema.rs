@@ -1,6 +1,6 @@
 use juniper::{graphql_object, EmptySubscription, FieldResult, RootNode};
 use crate::{utils::utils, RustyShortsDB};
-use crate::url::{Url, NewUrl};
+use crate::models::url::{Url, NewUrl};
 use diesel::prelude::*;
 use crate::schema::urls::dsl::*;
 
