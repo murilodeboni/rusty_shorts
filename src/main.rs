@@ -8,14 +8,13 @@ mod graphql;
 mod db;
 mod utils;
 
-use rocket_sync_db_pools::diesel;
 use rocket::serde::json::Json;
-use diesel::prelude::*;
+use rocket::fs::{FileServer, relative};
 use crate::api::redirect_to_original::redirect_to_original;
 use models::url;
 use graphql::schema::{create_schema, Schema};
 use db::RustyShortsDB;
-use juniper::http::{GraphQLRequest, GraphQLResponse};
+use juniper::http::GraphQLRequest;
 use juniper::http::GraphQLResponse as JuniperResponse; // Explicit import
 
 // use juniper_rocket::GraphQLResponse;
@@ -41,27 +40,12 @@ fn rocket() -> _ {
     let schema = create_schema();
 
     rocket::build()
-        .attach(RustyShortsDB::fairing()) // Attach the database fairing
-        .mount("/", routes![index]) // Mount routes
+        .attach(RustyShortsDB::fairing())
+        .mount("/", FileServer::from(relative!("static")))
         .mount("/", routes![redirect_to_original])
         .manage(schema)
         .mount("/", routes![
             graphql_handler,
             graphiql
         ])
-}
-
-#[get("/")]
-async fn index(db: RustyShortsDB) -> String {
-    let result = db
-        .run(|conn| {
-            diesel::dsl::sql::<diesel::sql_types::BigInt>("SELECT COUNT(*) FROM urls")
-                .get_result::<i64>(conn)
-        })
-        .await;
-
-    match result {
-        Ok(count) => format!("Number of URLs in DB: {}", count),
-        Err(e) => format!("Error querying DB: {}", e),
-    }
 }
