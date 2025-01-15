@@ -25,3 +25,7 @@ nanoid = "0.4.0"
 # For grphql
 juniper = "0.16"  # GraphQL library
 juniper_rocket = "0.9"  # Integrates GraphQL with Rocket
+
+# For qr code
+image = "0.25.5"
+qrcode = "0.14.1"
